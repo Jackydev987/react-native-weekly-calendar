@@ -120,6 +120,15 @@ const WeeklyCalendar = props => {
         setDayViewOffsets(offsets)
     }
 
+    const onWeekChange = (startDate, endDate) => {
+    // Perform actions or trigger events related to week change
+    console.log(`Week changed to: ${startDate.format('YYYY-MM-DD')} - ${endDate.format('YYYY-MM-DD')}`);
+    // You can call any provided onWeekChange prop if it's being passed to this component
+    if (props.onWeekChange) {
+        props.onWeekChange(startDate, endDate);
+    }
+}
+
     const clickLastWeekHandler = () => {
         setCalendarReady(false)
         const lastWeekCurrDate = currDate.subtract(7, 'days')
@@ -127,6 +136,7 @@ const WeeklyCalendar = props => {
         setSelectedDate(lastWeekCurrDate.clone().weekday(props.startWeekday - 7))
         createWeekdays(lastWeekCurrDate.clone(), eventMap)
         setCalendarReady(true)
+        onWeekChange(lastWeekCurrDate.clone(), lastWeekCurrDate.clone().weekday(props.startWeekday - 7));
     }
 
     const clickNextWeekHandler = () => {
@@ -136,6 +146,7 @@ const WeeklyCalendar = props => {
         setSelectedDate(nextWeekCurrDate.clone().weekday(props.startWeekday - 7))
         createWeekdays(nextWeekCurrDate.clone(), eventMap)
         setCalendarReady(true)
+        onWeekChange(nextWeekCurrDate.clone(), nextWeekCurrDate.clone().weekday(props.startWeekday - 7));
     }
 
     const isSelectedDate = date => {
@@ -353,6 +364,7 @@ WeeklyCalendar.propTypes = {
     renderLastDay: PropTypes.func,
     /** Handler which gets executed on day press. Default = undefined */
     onDayPress: PropTypes.func,
+    onWeekChanged: PropTypes.func,
     /** Set theme color */
     themeColor: PropTypes.string,
     /** Set style of component */
@@ -377,6 +389,7 @@ WeeklyCalendar.defaultProps = { // All props are optional
     renderFirstDay: undefined,
     renderLastDay: undefined,
     onDayPress: undefined,
+    onWeekChanged: undefined,
     themeColor: '#46c3ad',
     style: {},
     titleStyle: {},
