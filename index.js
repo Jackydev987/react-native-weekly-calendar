@@ -32,7 +32,13 @@ const WeeklyCalendar = props => {
         let dateMap = new Map()
 
         for (let i = 0; i < events.length; i++) {
-            let eventDate = moment(events[i].start).format('YYYY-MM-DD').toString()
+            console.log("create Event Map event : " + events[i]) 
+            console.log("create Event Map eventDate : " + events[i].start + " dur : " + events[i].duration)
+            let eventdetail = events[i].start.split(' ');
+            console.log("create Event Map eventDate " + eventdetail[0] + " | " + eventdetail[1]);
+
+            //let eventDate = moment(events[i].start).format('YYYY-MM-DD').toString()
+            let eventDate = eventdetail[0]
             if (dateMap.has(eventDate)) {
                 let eventArr = dateMap.get(eventDate)
                 eventArr.push(events[i])
@@ -57,9 +63,10 @@ const WeeklyCalendar = props => {
             // render schedule view
             let events = map.get(weekdayToAdd.format('YYYY-MM-DD').toString())
             let eventViews = []
-            if (events !== undefined) {
+            if (events !== undefined) {                
                 if(props.renderEvent !== undefined) {
                     eventViews = events.map((event, j) => {
+                        console.log("render event[" + j + "] : " + event.start + " | duration : " + event.duration);
                         if(props.renderFirstEvent !== undefined && j === 0) return props.renderFirstEvent(event, j)
                         else if(props.renderLastEvent !== undefined && j === events.length - 1) return props.renderLastEvent(event, j)
                         else return props.renderEvent(event, j)
